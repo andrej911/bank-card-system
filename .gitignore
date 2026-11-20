@@ -71,10 +71,9 @@ logs/
 *.log
 
 ### Spring Boot / БД ###
-application-*.yml
-application-*.properties
+application-local.yml
+application-local.properties
 *.db
-*.sql
 
 ### Временные файлы ###
 *.swp
