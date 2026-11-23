@@ -2,12 +2,14 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/bank_card_db}
     username: ${DB_USERNAME:postgres}
+    # Значения по умолчанию нет: нет DB_PASSWORD, приложение не стартует (fail-fast).
     password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
+      # Схемой владеет Liquibase, Hibernate только проверяет соответствие.
       ddl-auto: validate
-
+    # JPA-сессия не живёт весь HTTP-запрос: работа с БД только в сервисах.
     open-in-view: false
 
   liquibase:
@@ -15,6 +17,7 @@ spring:
 
 logging:
   level:
+    # SQL-запросы Hibernate через обычный логгер.
     org.hibernate.SQL: DEBUG
 
 server:
@@ -33,3 +36,9 @@ app:
     username: ${ADMIN_USERNAME:admin}
     email: ${ADMIN_EMAIL:admin@example.com}
     password: ${ADMIN_PASSWORD:}
+
+  card:
+    # AES-256 ключ шифрования номеров карт (32 байта в Base64).
+    encryption-key: ${CARD_ENCRYPTION_KEY}
+    # Отдельный ключ HMAC для хэша номера (уникальность и поиск).
+    hash-key: ${CARD_HASH_KEY}
