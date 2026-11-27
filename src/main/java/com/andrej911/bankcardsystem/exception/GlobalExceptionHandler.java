@@ -34,6 +34,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		log.warn("Conflict at {}: {}", path(request), ex.getMessage());
 		return build(HttpStatus.CONFLICT, ex.getMessage(), request);
 	}
+	
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiError> handleNotFound(
+            ResourceNotFoundException ex, WebRequest request) {
+        log.warn("Not found at {}: {}", path(request), ex.getMessage());
+        return build(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(BusinessRuleException.class)
+    public ResponseEntity<ApiError> handleBusinessRule(
+            BusinessRuleException ex, WebRequest request) {
+        log.warn("Business rule violated at {}: {}", path(request), ex.getMessage());
+        return build(HttpStatus.CONFLICT, ex.getMessage(), request);
+    }
 
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<ApiError> handleBadCredentials(
